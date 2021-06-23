@@ -28,6 +28,28 @@ export const addUsers = async (req, res) => {
   }
 };
 
+export const deleteUser = async (req, res) => {
+  console.log(req.user)
+  const id = req.params.id
+    try {
+      const data = await userModel.delete(`WHERE "id" = '${id}'`);
+      res.status(200).json({ delete: data.rows });
+    } catch (err) {
+      res.status(200).json({ delete: err.stack });
+    }
+};
+
+export const editUser = async (req, res) => {
+  console.log(req.user)
+  const id = req.params.id
+    try {
+      const data = await userModel.update(req.body, `WHERE "id" = '${id}'`);
+      res.status(200).json({ update: data.rows });
+    } catch (err) {
+      res.status(200).json({ update: err.stack });
+    }
+};
+
 //token login
 export const userLogin = async (req, res) => {
   const { email, password } = req.body;

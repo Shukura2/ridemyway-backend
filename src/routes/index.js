@@ -2,7 +2,7 @@ import express from 'express';
 import { usersPage, driversPage, addDrivers } from '../controllers/messages.js';
 import { validateCreateUser, validateCreateDriver, isLoggedIn } from '../middleware/AuthMiddleware.js';
 import { checkUserDetails, checkDriverDetails } from '../middleware/AuthMiddleware.js';
-import { addUsers, userLogin } from '../controllers/userController.js';
+import { addUsers, deleteUser, editUser, userLogin } from '../controllers/userController.js';
 import {usersHistory, addUsersHistory} from '../controllers/RideHistory.js';
 import { deleteOffer, updateOffer } from '../controllers/offers.js';
 
@@ -13,7 +13,8 @@ indexRouter.get('/', usersPage);
 indexRouter.get('/users', usersPage);
 indexRouter.post('/users/register', validateCreateUser, addUsers);
 indexRouter.post('/users/login', userLogin);
-indexRouter.delete('/users/edit');
+indexRouter.delete('/users/delete/:id', isLoggedIn, deleteUser);
+indexRouter.put('/users/edit/:id', isLoggedIn, editUser);
 
 
 indexRouter.get('/', driversPage);

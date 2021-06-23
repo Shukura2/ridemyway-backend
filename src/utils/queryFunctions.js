@@ -2,7 +2,6 @@ import { pool } from '../models/pool.js';
 import {
   dropUsersTable,
   createUsersTable,
-  insertIntoUsersTable,
   dropDriversTable,
   createDriversTable,
   insertIntoDriversTable,
@@ -42,7 +41,6 @@ export const createUserTable = () => executeQueryArray([
 ]);
 
 export const insertIntoTable = () => executeQueryArray([
-  insertIntoUsersTable, 
   insertIntoDriversTable,
   insertIntoOffersTable
 

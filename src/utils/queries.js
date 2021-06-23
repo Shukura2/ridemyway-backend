@@ -6,10 +6,10 @@ export const createUsersTable = `
     password varchar NOT NULL  
 )`;
 
-export const insertIntoUsersTable = `
-INSERT INTO users(full_name, email, password)
-VALUES ('Adeyemi', 'adeyemi@yahoo.com', 'ades12345')
-`;
+// export const insertIntoUsersTable = `
+// INSERT INTO users(full_name, email, password)
+// VALUES ('Adeyemi', 'adeyemi@yahoo.com', 'ades12345')
+// `;
 
 export const createDriversTable = `
   CREATE TABLE drivers (
