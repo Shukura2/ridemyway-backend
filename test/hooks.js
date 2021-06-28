@@ -1,14 +1,14 @@
 import {
   dropTables,
-  createTables,
-  insertIntoTables,
+  createUserTable
 } from '../src/utils/queryFunctions';
 
+// eslint-disable-next-line no-undef
 before(async () => {
-  await createTables();
-  await insertIntoTables();
+  await createUserTable();
 });
 
+// eslint-disable-next-line no-undef
 after(async () => {
-  await dropTables();
+  dropTables();
 });

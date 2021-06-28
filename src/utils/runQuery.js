@@ -1,11 +1,9 @@
 import {
   dropTables,
   createUserTable,
-  insertIntoTable
-} from './queryFunctions.js';
+} from './queryFunctions';
 
 (async () => {
   await dropTables();
   await createUserTable();
-  await insertIntoTable();
 })();

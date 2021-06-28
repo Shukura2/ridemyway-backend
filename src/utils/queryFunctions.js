@@ -1,28 +1,38 @@
 import { pool } from '../models/pool.js';
+
 import {
   dropUsersTable,
   createUsersTable,
   dropDriversTable,
   createDriversTable,
-  insertIntoDriversTable,
   dropRideHistoryTable,
   createRideHistoryTable,
   dropRideOffersTable,
   createRideOffersTable,
-  insertIntoOffersTable
-  // userIdReferenceUsersTable
-
 } from './queries.js';
 
-export const executeQueryArray = async (arr) =>
-  new Promise((resolve) => {
-    const stop = arr.length;
-    arr.forEach(async (q, index) => {
-      await pool.query(q);
-      if (index + 1 === stop) resolve();
-    });
+/**
+ * Connection to database
+ *
+ * @param {Array} arr array function
+ *
+ * @returns {void}
+ */
+export const executeQueryArray = async (arr) => new Promise((resolve) => {
+  const stop = arr.length;
+  arr.forEach(async (q, index) => {
+    await pool.query(q);
+    if (index + 1 === stop) resolve();
   });
+});
 
+/**
+ * Drop tables from database if need be
+ *
+ * @param {object} arr array function
+ *
+ * @returns {void}
+ */
 export const dropTables = () => executeQueryArray([
   dropUsersTable,
   dropDriversTable,
@@ -30,20 +40,14 @@ export const dropTables = () => executeQueryArray([
   dropRideHistoryTable
 ]);
 
-
+/**
+ * Create tables to database
+ *
+ * @returns {object} tables
+ */
 export const createUserTable = () => executeQueryArray([
+  createUsersTable,
   createRideOffersTable,
   createRideHistoryTable,
-  createUsersTable,
   createDriversTable
-  //  userIdReferenceUsersTable
-  
 ]);
-
-export const insertIntoTable = () => executeQueryArray([
-  insertIntoDriversTable,
-  insertIntoOffersTable
-
-]);
-
-

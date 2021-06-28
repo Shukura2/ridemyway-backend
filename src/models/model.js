@@ -1,5 +1,10 @@
 import { pool } from './pool.js';
 
+/**
+ * Connection to database
+ *
+ * @returns {object} from the database
+ */
 class Model {
   constructor(table) {
     this.pool = pool;
@@ -10,13 +15,30 @@ class Model {
     );
   }
 
+  /**
+   * Database model database
+   *
+   * @param {object} columns columns
+   *
+   * @param {object} clause clause
+   *
+   * @returns {object} object
+   */
   async select(columns, clause) {
     let query = `SELECT ${columns} FROM ${this.table} `;
     if (clause) query += clause;
     return this.pool.query(query);
   }
 
-
+  /**
+ * Model for Insert to database
+ *
+ * @param {object} columns columns
+ *
+ * @param {object} values values
+ *
+ * @returns {object} inserted data
+ */
   async insertWithReturn(columns, values) {
     const query = `
           INSERT INTO ${this.table}(${columns})
@@ -26,30 +48,41 @@ class Model {
     return this.pool.query(query);
   }
 
+  /**
+ * Model for delete
+ *
+ * @param {object} clause clause
+ *
+ * @returns {void}
+ */
   async delete(clause) {
-    let query = `DELETE FROM ${this.table} ${clause} `;
-    console.log(query)
+    const query = `DELETE FROM ${this.table} ${clause} `;
     return this.pool.query(query);
   }
 
-  async update(datas, clause) {
+  /**
+   * Model for update
+   *
+   * @param {object} data data
+   *
+   * @param {object} clause clause
+   *
+   * @returns {object} updated data
+   */
+  async update(data, clause) {
     let query;
 
-    if (typeof datas !== 'object'){
-      return 'Invalid data'
+    if (typeof data !== 'object') {
+      return 'Invalid data';
     }
-  if(datas){                                                    
-    const keys = Object.keys(datas);                            
-    const allData = keys.map(key => `${key} = '${datas[key]}'`);  
-    const allDataJoin = allData.join(', ');                     
-    query = `UPDATE ${this.table} SET ${allDataJoin} ${clause}`;
-  }else{
-    console.log('Invalid Details');
-  }
-    console.log(query)
+    if (data) {
+      const keys = Object.keys(data);
+      const allData = keys.map((key) => `${key} = '${data[key]}'`);
+      const allDataJoin = allData.join(', ');
+      query = `UPDATE ${this.table} SET ${allDataJoin} ${clause}`;
+    }
     return this.pool.query(query);
   }
 }
-
 
 export default Model;
