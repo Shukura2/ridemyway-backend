@@ -1,8 +1,7 @@
-import jwt from 'jsonwebtoken';
 import Model from '../models/model';
+import signToken from '../helperFuncitonFile';
 
 const userModel = new Model('users');
-const secretKey = process.env.SECRET_KEY;
 
 /**
  * Add user model template
@@ -41,10 +40,7 @@ export const addUsers = async (req, res) => {
     const data = await userModel.insertWithReturn(columns, values);
 
     const user = data.rows[0];
-    const token = jwt.sign({
-      user,
-      exp: Math.floor(Date.now() / 1000) + (60 * 60 * 24)
-    }, secretKey);
+    const token = signToken(user);
     res.status(200).json({
       user,
       token,
@@ -84,12 +80,12 @@ export const deleteUser = async (req, res) => {
  * @returns {object} name edited
  */
 export const editUser = async (req, res) => {
-  const { id } = req.params.id;
+  const { id } = req.user.data;
   try {
-    const data = await userModel.update(req.body, `WHERE "id" = '${id}'`);
+    const data = await userModel.updateColumn(req.body, `WHERE "id" = '${id}'`);
     res.status(200).json({ update: data.rows });
   } catch (err) {
-    res.status(200).json({ update: err.stack });
+    res.status(500).json({ update: err.stack });
   }
 };
 
@@ -114,10 +110,7 @@ export const userLogin = async (req, res) => {
     }
 
     const user = emailExists.rows[0];
-    const token = jwt.sign({
-      user,
-      exp: Math.floor(Date.now() / 1000) + (60 * 60 * 24)
-    }, secretKey);
+    const token = signToken(user);
     res.status(200).json({
       user,
       token,

@@ -1,9 +1,8 @@
-import jwt from 'jsonwebtoken';
-import bcrypt from 'bcrypt';
 import Model from '../models/model.js';
+import signToken from '../helperFuncitonFile.js';
 
 const driversModel = new Model('drivers');
-const secretKey = process.env.SECRET_KEY;
+
 /**
  * @description Take driver signup details
  *
@@ -40,10 +39,7 @@ export const addDrivers = async (req, res) => {
   try {
     const data = await driversModel.insertWithReturn(columns, values);
     const driver = data.rows[0];
-    const token = jwt.sign({
-      driver,
-      exp: Math.floor(Date.now() / 1000) + (60 * 60 * 24)
-    }, secretKey);
+    const token = signToken(driver);
     return res.status(200).json({
       driver,
       token,
@@ -76,10 +72,7 @@ export const driverLogin = async (req, res) => {
     }
 
     const driver = emailExists.rows[0];
-    const token = jwt.sign({
-      driver,
-      exp: Math.floor(Date.now() / 1000) + (60 * 60 * 24)
-    }, secretKey);
+    const token = signToken(driver);
     res.status(200).json({
       driver,
       token,
@@ -87,5 +80,24 @@ export const driverLogin = async (req, res) => {
     });
   } catch (err) {
     res.status(500).json(err);
+  }
+};
+
+/**
+ * Allow driver edit name
+ *
+ * @param {object} req request
+ *
+ * @param {object} res response
+ *
+ * @returns {object} name edited
+ */
+export const editDriver = async (req, res) => {
+  const { id } = req.user.data;
+  try {
+    const data = await driversModel.updateColumn(req.body, `WHERE "id" = '${id}'`);
+    res.status(200).json({ update: data.rows });
+  } catch (err) {
+    res.status(500).json({ update: err.stack });
   }
 };

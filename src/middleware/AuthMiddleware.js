@@ -28,7 +28,7 @@ export const validateCreateUser = async (req, res, next) => {
   if (error) {
     return res.status(400).send(error.details);
   }
-  const { fullName, email, password } = req.body;
+  const { email, password } = req.body;
   req.body.password = await bcrypt.hash(password, 10);
   const emailExists = await userModel.select('*', `WHERE "email" = '${email}'`);
   if (emailExists.rowCount) {
@@ -129,7 +129,7 @@ export const checkDriverDetails = async (req, res, next) => {
       });
     }
     const passwordValid = await bcrypt.compare(password, emailExist.rows[0].password);
-    if (!passwordValid) return res.status(400).send({ message: 'invalid password' });
+    if (passwordValid) return res.status(400).send({ message: 'invalid password' });
     return next();
   } catch (error) {
     return error.message;
