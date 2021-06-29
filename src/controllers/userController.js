@@ -15,9 +15,9 @@ const userModel = new Model('users');
 export const usersPage = async (req, res) => {
   try {
     const data = await userModel.select('"fullName", email, password');
-    res.status(200).json({ users: data.rows });
+    res.status(200).json({ error: data.rows });
   } catch (err) {
-    res.status(200).json({ users: err.stack });
+    res.status(200).json({ error: err.stack });
   }
 };
 
@@ -64,9 +64,9 @@ export const deleteUser = async (req, res) => {
   const { id } = req.params.id;
   try {
     const data = await userModel.delete(`WHERE "id" = '${id}'`);
-    res.status(200).json({ delete: data.rows });
+    res.status(200).json({ error: data.rows });
   } catch (err) {
-    res.status(200).json({ delete: err.stack });
+    res.status(200).json({ error: err.stack });
   }
 };
 
@@ -83,9 +83,9 @@ export const editUser = async (req, res) => {
   const { id } = req.user.data;
   try {
     const data = await userModel.updateColumn(req.body, `WHERE "id" = '${id}'`);
-    res.status(200).json({ update: data.rows });
+    res.status(200).json({ error: data.rows });
   } catch (err) {
-    res.status(500).json({ update: err.stack });
+    res.status(500).json({ error: err.stack });
   }
 };
 

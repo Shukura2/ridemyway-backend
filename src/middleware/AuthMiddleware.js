@@ -66,7 +66,10 @@ export const checkUserDetails = async (req, res, next) => {
     if (!passwordIsValid) return res.status(400).send({ message: 'invalid password' });
     return next();
   } catch (error) {
-    return error.message;
+    return res.status(400).send({
+      message: 'Password is invalid',
+      status: false
+    });
   }
 };
 
@@ -132,7 +135,10 @@ export const checkDriverDetails = async (req, res, next) => {
     if (passwordValid) return res.status(400).send({ message: 'invalid password' });
     return next();
   } catch (error) {
-    return error.message;
+    res.status(400).send({
+      message: 'Passsword is invalid',
+      status: false
+    });
   }
 };
 

@@ -16,9 +16,9 @@ export const usersHistory = async (req, res) => {
     const data = await rideHistoryModel.select(
       '"driverId", "userId", amount, "dateOfTrip", destination', `WHERE "user_id" = '${id}'`
     );
-    res.status(200).json({ rideHistory: data.rows });
+    res.status(200).json({ error: data.rows });
   } catch (err) {
-    res.status(200).json({ rideHistory: err.stack });
+    res.status(200).json({ error: err.stack });
   }
 };
 

@@ -13,9 +13,9 @@ const rideOffer = new Model('offers');
 export const offersRequest = async (req, res) => {
   try {
     const data = await rideOffer.select('"driverId", amount, "dateTime", destination');
-    res.status(200).json({ offers: data.rows });
+    res.status(200).json({ error: data.rows });
   } catch (err) {
-    res.status(200).json({ offers: err.stack });
+    res.status(200).json({ error: err.stack });
   }
 };
 
@@ -56,9 +56,9 @@ export const deleteOffer = async (req, res) => {
   const { id } = req.params.id;
   try {
     const data = await rideOffer.delete(`WHERE "id" = '${id}' AND "driverId" = '${driverId}'`);
-    res.status(200).json({ offers: data.rows });
+    res.status(200).json({ error: data.rows });
   } catch (err) {
-    res.status(200).json({ offers: err.stack });
+    res.status(200).json({ error: err.stack });
   }
 };
 
@@ -77,8 +77,8 @@ export const updateOffer = async (req, res) => {
   try {
     const data = await
     rideOffer.update(req.body, `WHERE "id" = '${id}' AND "driverId" = '${driverId}'`);
-    res.status(200).json({ offers: data.rows });
+    res.status(200).json({ error: data.rows });
   } catch (err) {
-    res.status(200).json({ offers: err.stack });
+    res.status(200).json({ error: err.stack });
   }
 };

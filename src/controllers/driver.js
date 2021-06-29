@@ -17,9 +17,9 @@ export const driversPage = async (req, res) => {
     const data = await driversModel.select(
       '"fullName", email, password'
     );
-    res.status(200).json({ drivers: data.rows });
+    res.status(200).json({ error: data.rows });
   } catch (err) {
-    res.status(200).json({ drivers: err.stack });
+    res.status(200).json({ error: err.stack });
   }
 };
 
@@ -96,8 +96,8 @@ export const editDriver = async (req, res) => {
   const { id } = req.user.data;
   try {
     const data = await driversModel.updateColumn(req.body, `WHERE "id" = '${id}'`);
-    res.status(200).json({ update: data.rows });
+    res.status(200).json({ error: data.rows });
   } catch (err) {
-    res.status(500).json({ update: err.stack });
+    res.status(500).json({ error: err.stack });
   }
 };
