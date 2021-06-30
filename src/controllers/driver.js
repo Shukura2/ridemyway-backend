@@ -43,7 +43,8 @@ export const addDrivers = async (req, res) => {
     return res.status(200).json({
       driver,
       token,
-      message: 'Driver created successfully!'
+      message: 'Driver created successfully!',
+      sucess: true
     });
   } catch (err) {
     return res.status(500).json(err);
@@ -76,7 +77,8 @@ export const driverLogin = async (req, res) => {
     res.status(200).json({
       driver,
       token,
-      message: 'Driver login successfully!'
+      message: 'Driver login successfully!',
+      success: true
     });
   } catch (err) {
     res.status(500).json(err);

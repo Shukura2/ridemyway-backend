@@ -1,4 +1,5 @@
 import {
+  tableReference,
   dropTables,
   createUserTable,
 } from './queryFunctions';
@@ -6,4 +7,5 @@ import {
 (async () => {
   await dropTables();
   await createUserTable();
+  await tableReference();
 })();

@@ -33,6 +33,15 @@ export const createRideOffersTable = `
     destination varchar NOT NULL
 )`;
 
+export const referenceOffersTable = `
+ALTER TABLE offers ADD FOREIGN KEY ("driverId") REFERENCES drivers(id)`;
+
+export const refDriverIdFromRideHistory = `
+ALTER TABLE ride_history ADD FOREIGN KEY ("driverId") REFERENCES  drivers(id)`;
+
+export const refUserIdFromRideHistory = `
+ALTER TABLE ride_history ADD FOREIGN KEY ("userId") REFERENCES  users(id)`;
+
 export const dropUsersTable = 'DROP TABLE IF EXISTS users';
 export const dropDriversTable = 'DROP TABLE IF EXISTS drivers';
 export const dropRideOffersTable = 'DROP TABLE IF EXISTS offers';

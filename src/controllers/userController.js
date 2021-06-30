@@ -44,7 +44,8 @@ export const addUsers = async (req, res) => {
     res.status(200).json({
       user,
       token,
-      message: 'User created successfully!'
+      message: 'User created successfully!',
+      success: true
     });
   } catch (err) {
     res.status(500).json(err);
@@ -114,7 +115,8 @@ export const userLogin = async (req, res) => {
     res.status(200).json({
       user,
       token,
-      message: 'User login successfully!'
+      message: 'User login successfully!',
+      success: true
     });
   } catch (err) {
     res.status(500).json(err);

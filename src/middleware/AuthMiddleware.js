@@ -178,7 +178,7 @@ export const isLoggedIn = (req, res, next) => {
   } catch (error) {
     res.status(401).send({
       status: false,
-      message: 'Authentication token is invalid or expired'
+      message: 'Authentication token is invalid or expired',
     });
   }
 };
