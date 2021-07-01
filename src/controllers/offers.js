@@ -1,23 +1,6 @@
 import Model from '../models/model.js';
 
 const rideOffer = new Model('offers');
-/**
- * Collect the offers request information
- *
- * @param {object} req request
- *
- * @param {object} res response
- *
- * @returns {object} offers information
- */
-export const offersRequest = async (req, res) => {
-  try {
-    const data = await rideOffer.select('"driverId", amount, "dateTime", destination');
-    res.status(200).json({ message: data.rows });
-  } catch (err) {
-    res.status(500).json({ message: err.stack });
-  }
-};
 
 /**
  * Insert informations to the table
@@ -36,7 +19,7 @@ export const addUsersOffers = async (req, res) => {
   const values = `'${driverId}', '${amount}', '${destination}'`;
   try {
     const data = await rideOffer.insertWithReturn(columns, values);
-    res.status(200).json({data: data.rows[0]});
+    res.status(200).json({ data: data.rows[0] });
   } catch (err) {
     res.status(500).json({ message: err.stack });
   }

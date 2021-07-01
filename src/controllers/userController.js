@@ -4,24 +4,6 @@ import signToken from '../helperFunctionFile';
 const userModel = new Model('users');
 
 /**
- * Add user model template
- *
- * @param {object} req request
- *
- * @param {object} res response
- *
- * @returns {object} user template
- */
-export const usersPage = async (req, res) => {
-  try {
-    const data = await userModel.select('"fullName", email, password');
-    res.status(200).json({ message: data.rows });
-  } catch (err) {
-    res.status(200).json({ message: err.stack });
-  }
-};
-
-/**
  * Add user information to database
  *
  * @param {object} req request

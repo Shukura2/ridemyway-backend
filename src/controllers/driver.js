@@ -4,26 +4,6 @@ import signToken from '../helperFunctionFile.js';
 const driversModel = new Model('drivers');
 
 /**
- * @description Take driver signup details
- *
- * @param {object} req - response
- *
- * @param {object} res - response
- *
- * @returns {object} driver detals
- */
-export const driversPage = async (req, res) => {
-  try {
-    const data = await driversModel.select(
-      '"fullName", email, password'
-    );
-    res.status(200).json({ message: data.rows });
-  } catch (err) {
-    res.status(500).json({ message: err.stack });
-  }
-};
-
-/**
  * Add the driver details to database
  *
  * @param {object} req - request

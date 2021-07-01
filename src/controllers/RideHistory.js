@@ -1,29 +1,9 @@
 import Model from '../models/model.js';
 
 const rideHistoryModel = new Model('ride_history');
-/**
- * Add information with the template
- *
- * @param {object} req request
- *
- * @param {object} res response
- *
- * @returns {void} ride history
- */
-export const usersHistory = async (req, res) => {
-  const { id } = req.user.usersHistory;
-  try {
-    const data = await rideHistoryModel.select(
-      '"driverId", "userId", amount, "dateOfTrip", destination', `WHERE "user_id" = '${id}'`
-    );
-    res.status(200).json({ message: data.rows });
-  } catch (err) {
-    res.status(500).json({ message: err.stack });
-  }
-};
 
 /**
- * Insert into user history
+ * Insert user history into database
  *
  * @param {object} req - request
  *
