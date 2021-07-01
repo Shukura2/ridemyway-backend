@@ -36,7 +36,7 @@ export const addUsersOffers = async (req, res) => {
   const values = `'${driverId}', '${amount}', '${destination}'`;
   try {
     const data = await rideOffer.insertWithReturn(columns, values);
-    res.status(200).json(data.rows[0]);
+    res.status(200).json({data: data.rows[0]});
   } catch (err) {
     res.status(500).json({ message: err.stack });
   }

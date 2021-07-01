@@ -15,9 +15,9 @@ const userModel = new Model('users');
 export const usersPage = async (req, res) => {
   try {
     const data = await userModel.select('"fullName", email, password');
-    res.status(200).json({ user: data.rows });
+    res.status(200).json({ message: data.rows });
   } catch (err) {
-    res.status(200).json({ user: err.stack });
+    res.status(200).json({ message: err.stack });
   }
 };
 
