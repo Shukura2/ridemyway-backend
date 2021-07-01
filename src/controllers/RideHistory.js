@@ -16,9 +16,9 @@ export const usersHistory = async (req, res) => {
     const data = await rideHistoryModel.select(
       '"driverId", "userId", amount, "dateOfTrip", destination', `WHERE "user_id" = '${id}'`
     );
-    res.status(200).json({ error: data.rows });
+    res.status(200).json({ message: data.rows });
   } catch (err) {
-    res.status(200).json({ error: err.stack });
+    res.status(500).json({ message: err.stack });
   }
 };
 
@@ -41,6 +41,6 @@ export const addUsersHistory = async (req, res) => {
     const data = await rideHistoryModel.insertWithReturn(columns, values);
     res.status(200).json(data.rows[0]);
   } catch (err) {
-    res.status(500).json(err);
+    res.status(500).json({ message: err.stack });
   }
 };

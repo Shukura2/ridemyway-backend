@@ -34,7 +34,7 @@ export const validateCreateUser = async (req, res, next) => {
   if (emailExists.rowCount) {
     return res.status(400).send({
       message: 'Email already exists',
-      status: false
+      success: false
     });
   }
 
@@ -59,7 +59,7 @@ export const checkUserDetails = async (req, res, next) => {
     if (emailExists.rowCount === 0) {
       return res.status(400).send({
         message: 'Invalid Email',
-        status: false
+        success: false
       });
     }
     const passwordIsValid = await bcrypt.compare(password, emailExists.rows[0].password);
@@ -68,7 +68,7 @@ export const checkUserDetails = async (req, res, next) => {
   } catch (error) {
     return res.status(400).send({
       message: 'Password is invalid',
-      status: false
+      success: false
     });
   }
 };
@@ -97,13 +97,14 @@ export const validateCreateDriver = async (req, res, next) => {
   if (error) {
     return res.status(400).send(error.details);
   }
-  const { email } = req.body;
+  const { email, password } = req.body;
+  req.body.password = await bcrypt.hash(password, 10);
   const emailExists = await userModel.select('*', `WHERE "email" = '${email}'`);
 
   if (emailExists.rowCount) {
     return res.status(400).send({
       message: 'Email already exists',
-      status: false
+      success: false
     });
   }
 
@@ -128,16 +129,16 @@ export const checkDriverDetails = async (req, res, next) => {
     if (emailExist.rowCount === 0) {
       return res.status(400).send({
         message: 'Invalid Email',
-        status: false
+        success: false
       });
     }
     const passwordValid = await bcrypt.compare(password, emailExist.rows[0].password);
-    if (passwordValid) return res.status(400).send({ message: 'invalid password' });
+    if (!passwordValid) return res.status(400).send({ message: 'invalid password' });
     return next();
   } catch (error) {
-    res.status(400).send({
+    return res.status(400).send({
       message: 'Passsword is invalid',
-      status: false
+      success: false
     });
   }
 };
@@ -164,20 +165,20 @@ export const isLoggedIn = (req, res, next) => {
         req.user = userData;
         next();
       } else {
-        res.status(401).send({
-          status: false,
+        res.status(400).send({
+          success: false,
           message: 'Authentication token is invalid or expired'
         });
       }
     } else {
       res.status(401).send({
-        status: false,
+        success: false,
         message: 'Authentication token does not exist'
       });
     }
   } catch (error) {
-    res.status(401).send({
-      status: false,
+    return res.status(400).send({
+      success: false,
       message: 'Authentication token is invalid or expired',
     });
   }

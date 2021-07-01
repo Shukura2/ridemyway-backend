@@ -1,5 +1,5 @@
 import Model from '../models/model.js';
-import signToken from '../helperFuncitonFile.js';
+import signToken from '../helperFunctionFile.js';
 
 const driversModel = new Model('drivers');
 
@@ -17,9 +17,9 @@ export const driversPage = async (req, res) => {
     const data = await driversModel.select(
       '"fullName", email, password'
     );
-    res.status(200).json({ error: data.rows });
+    res.status(200).json({ message: data.rows });
   } catch (err) {
-    res.status(200).json({ error: err.stack });
+    res.status(500).json({ message: err.stack });
   }
 };
 
@@ -44,10 +44,10 @@ export const addDrivers = async (req, res) => {
       driver,
       token,
       message: 'Driver created successfully!',
-      sucess: true
+      success: true
     });
   } catch (err) {
-    return res.status(500).json(err);
+    res.status(500).json({ message: err.stack });
   }
 };
 
@@ -68,7 +68,7 @@ export const driverLogin = async (req, res) => {
     if (emailExists.rowCount === 0) {
       return res.status(400).send({
         message: 'Invalid Email',
-        status: false
+        success: false
       });
     }
 
@@ -81,7 +81,7 @@ export const driverLogin = async (req, res) => {
       success: true
     });
   } catch (err) {
-    res.status(500).json(err);
+    res.status(500).json({ message: err.stack });
   }
 };
 
@@ -97,9 +97,10 @@ export const driverLogin = async (req, res) => {
 export const editDriver = async (req, res) => {
   const { id } = req.user.data;
   try {
+    // eslint-disable-next-line no-unused-vars
     const data = await driversModel.updateColumn(req.body, `WHERE "id" = '${id}'`);
-    res.status(200).json({ error: data.rows });
+    res.status(200).json({ message: 'Edit completed', success: true });
   } catch (err) {
-    res.status(500).json({ error: err.stack });
+    res.status(500).json({ message: err.stack });
   }
 };

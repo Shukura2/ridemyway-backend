@@ -1,5 +1,5 @@
 import Model from '../models/model';
-import signToken from '../helperFuncitonFile';
+import signToken from '../helperFunctionFile';
 
 const userModel = new Model('users');
 
@@ -15,9 +15,9 @@ const userModel = new Model('users');
 export const usersPage = async (req, res) => {
   try {
     const data = await userModel.select('"fullName", email, password');
-    res.status(200).json({ error: data.rows });
+    res.status(200).json({ user: data.rows });
   } catch (err) {
-    res.status(200).json({ error: err.stack });
+    res.status(200).json({ user: err.stack });
   }
 };
 
@@ -48,26 +48,7 @@ export const addUsers = async (req, res) => {
       success: true
     });
   } catch (err) {
-    res.status(500).json(err);
-  }
-};
-
-/**
- * Allow user delete data
- *
- * @param {object} req - request
- *
- * @param {object} res - response
- *
- * @returns {object} object
- */
-export const deleteUser = async (req, res) => {
-  const { id } = req.params.id;
-  try {
-    const data = await userModel.delete(`WHERE "id" = '${id}'`);
-    res.status(200).json({ error: data.rows });
-  } catch (err) {
-    res.status(200).json({ error: err.stack });
+    res.status(500).json({ message: err.stack });
   }
 };
 
@@ -83,10 +64,11 @@ export const deleteUser = async (req, res) => {
 export const editUser = async (req, res) => {
   const { id } = req.user.data;
   try {
+    // eslint-disable-next-line no-unused-vars
     const data = await userModel.updateColumn(req.body, `WHERE "id" = '${id}'`);
-    res.status(200).json({ error: data.rows });
+    res.status(200).json({ message: 'Edit completed', success: true });
   } catch (err) {
-    res.status(500).json({ error: err.stack });
+    res.status(500).json({ message: err.stack });
   }
 };
 
@@ -106,7 +88,7 @@ export const userLogin = async (req, res) => {
     if (emailExists.rowCount === 0) {
       return res.status(400).send({
         message: 'Invalid Email',
-        status: false
+        success: false
       });
     }
 
@@ -119,6 +101,6 @@ export const userLogin = async (req, res) => {
       success: true
     });
   } catch (err) {
-    res.status(500).json(err);
+    res.status(500).json({ message: err.stack });
   }
 };

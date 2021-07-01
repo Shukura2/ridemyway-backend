@@ -13,9 +13,9 @@ const rideOffer = new Model('offers');
 export const offersRequest = async (req, res) => {
   try {
     const data = await rideOffer.select('"driverId", amount, "dateTime", destination');
-    res.status(200).json({ error: data.rows });
+    res.status(200).json({ message: data.rows });
   } catch (err) {
-    res.status(200).json({ error: err.stack });
+    res.status(500).json({ message: err.stack });
   }
 };
 
@@ -38,7 +38,7 @@ export const addUsersOffers = async (req, res) => {
     const data = await rideOffer.insertWithReturn(columns, values);
     res.status(200).json(data.rows[0]);
   } catch (err) {
-    res.status(500).json(err);
+    res.status(500).json({ message: err.stack });
   }
 };
 
@@ -52,13 +52,14 @@ export const addUsersOffers = async (req, res) => {
  * @returns {object} object
  */
 export const deleteOffer = async (req, res) => {
-  const driverId = req.user.driver.id;
-  const { id } = req.params.id;
+  const driverId = req.user.data.id;
+  const { id } = req.params;
   try {
+    // eslint-disable-next-line no-unused-vars
     const data = await rideOffer.delete(`WHERE "id" = '${id}' AND "driverId" = '${driverId}'`);
-    res.status(200).json({ error: data.rows });
+    res.status(200).json({ message: 'Offer deleted', success: true });
   } catch (err) {
-    res.status(200).json({ error: err.stack });
+    res.status(500).json({ message: err.stack });
   }
 };
 
@@ -72,13 +73,14 @@ export const deleteOffer = async (req, res) => {
  * @returns {object} updated offer
  */
 export const updateOffer = async (req, res) => {
-  const driverId = req.user.driver.id;
-  const { id } = req.params.id;
+  const driverId = req.user.data.id;
+  const { id } = req.params;
   try {
-    const data = await
-    rideOffer.update(req.body, `WHERE "id" = '${id}' AND "driverId" = '${driverId}'`);
-    res.status(200).json({ error: data.rows });
+    // eslint-disable-next-line no-unused-vars
+    const data = await rideOffer.updateColumn(req.body, `
+    WHERE "id" = '${id}' AND "driverId" = '${driverId}'`);
+    res.status(200).json({ message: 'Update successful', success: true });
   } catch (err) {
-    res.status(200).json({ error: err.stack });
+    res.status(500).json({ message: err.stack });
   }
 };

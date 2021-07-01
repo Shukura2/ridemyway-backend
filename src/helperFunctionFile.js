@@ -3,11 +3,11 @@ import jwt from 'jsonwebtoken';
 const secretKey = process.env.SECRET_KEY;
 
 /**
- * Helper function
+ * Helper function for jwt token
  *
  * @param {object} data object
  *
- * @returns {object} object
+ * @returns {object} token
  */
 const signToken = (data) => {
   const token = jwt.sign({
