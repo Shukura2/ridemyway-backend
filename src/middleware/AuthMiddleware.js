@@ -137,7 +137,7 @@ export const checkDriverDetails = async (req, res, next) => {
     return next();
   } catch (error) {
     return res.status(400).send({
-      message: 'Passsword is invalid',
+      message: 'Password is invalid',
       success: false
     });
   }
