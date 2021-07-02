@@ -7,7 +7,7 @@ import { isLoggedIn } from '../middleware/AuthMiddleware';
 const offersRouter = express.Router();
 
 offersRouter.post('/offers/request', isLoggedIn, addUsersOffers);
-offersRouter.delete('/offer/delete/:id', isLoggedIn, deleteOffer);
+offersRouter.delete('/offer/:id', isLoggedIn, deleteOffer);
 offersRouter.put('/offer/update/:id', isLoggedIn, updateOffer);
 
 export default offersRouter;

@@ -7,7 +7,7 @@ import { checkDriverDetails, isLoggedIn, validateCreateDriver } from '../middlew
 const driverRouter = express.Router();
 
 driverRouter.post('/drivers/register', validateCreateDriver, addDrivers);
-driverRouter.post('/drivers/login', checkDriverDetails, driverLogin);
-driverRouter.put('/drivers/edit/:id', isLoggedIn, editDriver);
+driverRouter.post('/driver/login', checkDriverDetails, driverLogin);
+driverRouter.put('/driver/edit-profile', isLoggedIn, editDriver);
 
 export default driverRouter;

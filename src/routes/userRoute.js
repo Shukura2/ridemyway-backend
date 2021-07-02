@@ -7,7 +7,7 @@ import {
 const userRouter = express.Router();
 
 userRouter.post('/users/register', validateCreateUser, addUsers);
-userRouter.post('/users/login', checkUserDetails, userLogin);
-userRouter.put('/users/edit/:id', isLoggedIn, editUser);
+userRouter.post('/user/login', checkUserDetails, userLogin);
+userRouter.put('/user/edit-profile', isLoggedIn, editUser);
 
 export default userRouter;
