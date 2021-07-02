@@ -8,6 +8,6 @@ const offersRouter = express.Router();
 
 offersRouter.post('/offers/request', isLoggedIn, addUsersOffers);
 offersRouter.delete('/offer/:id', isLoggedIn, deleteOffer);
-offersRouter.put('/offer/update/:id', isLoggedIn, updateOffer);
+offersRouter.put('/offer/:id', isLoggedIn, updateOffer);
 
 export default offersRouter;
