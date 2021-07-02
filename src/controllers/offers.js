@@ -26,7 +26,7 @@ export const addUsersOffers = async (req, res) => {
 };
 
 /**
- * Allow user delete offers
+ * Allow driver delete offers
  *
  * @param {object} req request
  *
@@ -47,7 +47,7 @@ export const deleteOffer = async (req, res) => {
 };
 
 /**
- * Allows user update offer
+ * Allows driver update offer
  *
  * @param {object} req request
  *

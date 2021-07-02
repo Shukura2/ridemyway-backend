@@ -95,14 +95,14 @@ export const validateCreateDriver = async (req, res, next) => {
 
   const { error } = Joi.validate(req.body, driverSchema);
   if (error) {
-    return res.status(400).send(error.details);
+    res.status(400).send(error.details);
   }
   const { email, password } = req.body;
   req.body.password = await bcrypt.hash(password, 10);
   const emailExists = await userModel.select('*', `WHERE "email" = '${email}'`);
 
   if (emailExists.rowCount) {
-    return res.status(400).send({
+    res.status(400).send({
       message: 'Email already exists',
       success: false
     });
@@ -127,7 +127,7 @@ export const checkDriverDetails = async (req, res, next) => {
   try {
     const emailExist = await driversModel.select('*', `WHERE "email" = '${email}'`);
     if (emailExist.rowCount === 0) {
-      return res.status(400).send({
+      res.status(400).send({
         message: 'Invalid Email',
         success: false
       });
@@ -136,7 +136,7 @@ export const checkDriverDetails = async (req, res, next) => {
     if (!passwordValid) return res.status(400).send({ message: 'invalid password' });
     return next();
   } catch (error) {
-    return res.status(400).send({
+    res.status(400).send({
       message: 'Password is invalid',
       success: false
     });

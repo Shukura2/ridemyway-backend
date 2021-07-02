@@ -23,7 +23,7 @@ export const addUsers = async (req, res) => {
 
     const user = data.rows[0];
     const token = signToken(user);
-    res.status(200).json({
+    return res.status(200).json({
       user,
       token,
       message: 'User created successfully!',
@@ -48,7 +48,7 @@ export const editUser = async (req, res) => {
   try {
     // eslint-disable-next-line no-unused-vars
     const data = await userModel.updateColumn(req.body, `WHERE "id" = '${id}'`);
-    res.status(200).json({ message: 'Edit completed', success: true });
+    return res.status(200).json({ message: 'Edit completed', success: true });
   } catch (err) {
     res.status(500).json({ message: err.stack });
   }
@@ -76,7 +76,7 @@ export const userLogin = async (req, res) => {
 
     const user = emailExists.rows[0];
     const token = signToken(user);
-    res.status(200).json({
+    return res.status(200).json({
       user,
       token,
       message: 'User login successfully!',

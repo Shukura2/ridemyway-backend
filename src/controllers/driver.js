@@ -54,7 +54,7 @@ export const driverLogin = async (req, res) => {
 
     const driver = emailExists.rows[0];
     const token = signToken(driver);
-    res.status(200).json({
+    return res.status(200).json({
       driver,
       token,
       message: 'Driver login successfully!',
@@ -79,7 +79,7 @@ export const editDriver = async (req, res) => {
   try {
     // eslint-disable-next-line no-unused-vars
     const data = await driversModel.updateColumn(req.body, `WHERE "id" = '${id}'`);
-    res.status(200).json({ message: 'Edit completed', success: true });
+    return res.status(200).json({ message: 'Edit completed', success: true });
   } catch (err) {
     res.status(500).json({ message: err.stack });
   }
