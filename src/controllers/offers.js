@@ -13,8 +13,8 @@ const rideOffer = new Model('offers');
  */
 export const addUsersOffers = async (req, res) => {
   const { amount, destination } = req.body;
-  const { data: { id } } = req.user;
-  const columns = '"driverId, amount, destination';
+  const { id } = req.user;
+  const columns = '"driverId", amount, destination';
   const values = `'${id}', '${amount}', '${destination}'`;
   try {
     const data = await rideOffer.insertWithReturn(columns, values);
@@ -55,7 +55,7 @@ export const deleteOffer = async (req, res) => {
  */
 export const updateOffer = async (req, res) => {
   const offerId = req.params.id;
-  const { data: { id } } = req.user;
+  const { id } = req.user;
   try {
     // eslint-disable-next-line no-unused-vars
     const data = await rideOffer.update(req.body, `

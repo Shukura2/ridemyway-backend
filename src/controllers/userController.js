@@ -30,7 +30,10 @@ export const addUsers = async (req, res) => {
       success: true
     });
   } catch (err) {
-    res.status(500).json({ message: err.stack });
+    res.status(500).json({
+      messsage: 'Email already exist',
+      success: false
+    });
   }
 };
 
@@ -44,7 +47,7 @@ export const addUsers = async (req, res) => {
  * @returns {object} name edited
  */
 export const editUser = async (req, res) => {
-  const { id } = req.user.data;
+  const { id } = req.user;
   try {
     // eslint-disable-next-line no-unused-vars
     const data = await userModel.update(req.body, `WHERE "id" = '${id}'`);

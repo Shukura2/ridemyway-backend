@@ -28,7 +28,10 @@ export const addDrivers = async (req, res) => {
       success: true
     });
   } catch (err) {
-    res.status(500).json({ message: err.stack });
+    res.status(500).json({
+      messsage: 'Email already exist',
+      success: false
+    });
   }
 };
 
@@ -77,7 +80,7 @@ export const driverLogin = async (req, res) => {
  * @returns {object} name edited
  */
 export const editDriver = async (req, res) => {
-  const { id } = req.user.data;
+  const { id } = req.user;
   try {
     // eslint-disable-next-line no-unused-vars
     const data = await driversModel.update(req.body, `WHERE "id" = '${id}'`);
