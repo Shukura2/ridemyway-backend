@@ -20,10 +20,10 @@ export const addUsers = async (req, res) => {
   const values = `'${fullName}', '${email}', '${password}'`;
   try {
     const data = await userModel.insertWithReturn(columns, values);
-
-    const user = data.rows[0];
+    const { id } = data.rows[0];
+    const user = { id, email: data.rows[0].email };
     const token = signToken(user);
-    return res.status(200).json({
+    return res.status(201).json({
       user,
       token,
       message: 'User created successfully!',
@@ -47,7 +47,7 @@ export const editUser = async (req, res) => {
   const { id } = req.user.data;
   try {
     // eslint-disable-next-line no-unused-vars
-    const data = await userModel.updateColumn(req.body, `WHERE "id" = '${id}'`);
+    const data = await userModel.update(req.body, `WHERE "id" = '${id}'`);
     return res.status(200).json({ message: 'Edit completed', success: true });
   } catch (err) {
     res.status(500).json({ message: err.stack });
@@ -73,8 +73,8 @@ export const userLogin = async (req, res) => {
         success: false
       });
     }
-
-    const user = emailExists.rows[0];
+    const { id } = emailExists.rows[0];
+    const user = { id, email };
     const token = signToken(user);
     return res.status(200).json({
       user,

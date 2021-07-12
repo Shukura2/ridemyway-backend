@@ -16,7 +16,7 @@ class Model {
   }
 
   /**
-   * Database model database
+   * Database model
    *
    * @param {object} columns columns
    *
@@ -70,30 +70,6 @@ class Model {
    * @returns {object} updated data
    */
   async update(data, clause) {
-    let query;
-
-    if (typeof data !== 'object') {
-      return 'Invalid data';
-    }
-    if (data) {
-      const keys = Object.keys(data);
-      const allData = keys.map((key) => `${key} = '${data[key]}'`);
-      const allDataJoin = allData.join(', ');
-      query = `UPDATE ${this.table} SET ${allDataJoin} ${clause}`;
-    }
-    return this.pool.query(query);
-  }
-
-  /**
-   * Model for update for snake case
-   *
-   * @param {object} data data
-   *
-   * @param {object} clause clause
-   *
-   * @returns {object} updated data
-   */
-  async updateColumn(data, clause) {
     let query;
 
     if (typeof data !== 'object') {

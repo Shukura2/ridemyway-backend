@@ -20,16 +20,12 @@ const secretKey = process.env.SECRET_KEY;
 export const validateCreateUser = async (req, res, next) => {
   const userSchema = {
     fullName: Joi.string().required(),
-    email: Joi.string().max(50).required(),
+    email: Joi.string().email().max(256).required(),
     password: Joi.string().min(10).required()
   };
 
   const { error } = Joi.validate(req.body, userSchema);
-  if (error) {
-    return res.status(400).send(error.details);
-  }
   const { email, password } = req.body;
-  req.body.password = await bcrypt.hash(password, 10);
   const emailExists = await userModel.select('*', `WHERE "email" = '${email}'`);
   if (emailExists.rowCount) {
     return res.status(400).send({
@@ -37,7 +33,12 @@ export const validateCreateUser = async (req, res, next) => {
       success: false
     });
   }
-
+  if (error) {
+    return res.status(400).send({
+      messsage: error.message
+    });
+  }
+  req.body.password = await bcrypt.hash(password, 10);
   return next();
 };
 
@@ -89,13 +90,15 @@ const driversModel = new Model('drivers');
 export const validateCreateDriver = async (req, res, next) => {
   const driverSchema = {
     fullName: Joi.string().required(),
-    email: Joi.string().max(50).required(),
+    email: Joi.string().email().max(256).required(),
     password: Joi.string().min(10).required()
   };
 
   const { error } = Joi.validate(req.body, driverSchema);
   if (error) {
-    res.status(400).send(error.details);
+    res.status(400).send({
+      messsage: error.message
+    });
   }
   const { email, password } = req.body;
   req.body.password = await bcrypt.hash(password, 10);
@@ -107,7 +110,6 @@ export const validateCreateDriver = async (req, res, next) => {
       success: false
     });
   }
-
   return next();
 };
 

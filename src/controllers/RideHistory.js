@@ -13,13 +13,14 @@ const rideHistoryModel = new Model('ride_history');
  */
 export const addUsersHistory = async (req, res) => {
   const {
-    driverId, userId, amount, destination
+    driverId, amount, destination
   } = req.body;
-  const columns = '"driverId", "userId", amount, destination';
-  const values = `'${driverId}', '${userId}', '${amount}', '${destination}'`;
+  const userId = req.user.data.id;
+  const columns = '"driverId", "userId", amount, destination, status';
+  const values = `'${driverId}', '${userId}', '${amount}', '${destination}', 'Pending' `;
   try {
     const data = await rideHistoryModel.insertWithReturn(columns, values);
-    res.status(200).json({ data: data.rows[0] });
+    res.status(201).json({ data: data.rows[0] });
   } catch (err) {
     res.status(500).json({ message: err.stack });
   }

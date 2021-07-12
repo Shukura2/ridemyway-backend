@@ -18,7 +18,8 @@ export const addDrivers = async (req, res) => {
   const values = `'${fullName}', '${email}', '${password}'`;
   try {
     const data = await driversModel.insertWithReturn(columns, values);
-    const driver = data.rows[0];
+    const { id } = data.rows[0];
+    const driver = { id, email: data.rows[0].email };
     const token = signToken(driver);
     return res.status(200).json({
       driver,
@@ -52,9 +53,10 @@ export const driverLogin = async (req, res) => {
       });
     }
 
-    const driver = emailExists.rows[0];
+    const { id } = emailExists.rows[0];
+    const driver = { id, email };
     const token = signToken(driver);
-    return res.status(200).json({
+    return res.status(201).json({
       driver,
       token,
       message: 'Driver login successfully!',
@@ -78,7 +80,7 @@ export const editDriver = async (req, res) => {
   const { id } = req.user.data;
   try {
     // eslint-disable-next-line no-unused-vars
-    const data = await driversModel.updateColumn(req.body, `WHERE "id" = '${id}'`);
+    const data = await driversModel.update(req.body, `WHERE "id" = '${id}'`);
     return res.status(200).json({ message: 'Edit completed', success: true });
   } catch (err) {
     res.status(500).json({ message: err.stack });

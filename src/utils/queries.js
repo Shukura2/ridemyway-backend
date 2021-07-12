@@ -1,8 +1,8 @@
 export const createUsersTable = `
   CREATE TABLE users(
     id SERIAL PRIMARY KEY,
-    "fullName" varchar NOT NULL,
-    email varchar UNIQUE NOT NULL,
+    "fullName" varchar(255) NOT NULL,
+    email varchar(256) UNIQUE NOT NULL,
     password varchar NOT NULL  
 )`;
 
@@ -10,7 +10,7 @@ export const createDriversTable = `
   CREATE TABLE drivers (
   id SERIAL PRIMARY KEY,
   "fullName" varchar(255) NOT NULL,
-  email varchar(70) UNIQUE NOT NULL,
+  email varchar(256) UNIQUE NOT NULL,
   password varchar NOT NULL
 )`;
 
@@ -21,16 +21,17 @@ export const createRideHistoryTable = `
     "userId" int NOT NULL,
     amount int NOT NULL,
     "dateOfTrip" timestamp DEFAULT NOW() NOT NULL,
-    destination varchar NOT NULL
+    destination varchar NOT NULL,
+    status varchar
 )`;
 
 export const createRideOffersTable = `
  CREATE TABLE offers (
    id SERIAL PRIMARY KEY,
     "driverId" int NOT NULL,
-    amount varchar NOT NULL,
+    amount varchar(256) NOT NULL,
     "dateTime" timestamp DEFAULT NOW() NOT NULL,
-    destination varchar NOT NULL
+    destination varchar(256) NOT NULL
 )`;
 
 export const referenceOffersTable = `
