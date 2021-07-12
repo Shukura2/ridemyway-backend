@@ -129,17 +129,17 @@ export const checkDriverDetails = async (req, res, next) => {
   try {
     const emailExist = await driversModel.select('*', `WHERE "email" = '${email}'`);
     if (emailExist.rowCount === 0) {
-      res.status(400).send({
-        message: 'Invalid Email',
+      res.status(409).send({
+        message: 'Driver with the email address already exists',
         success: false
       });
     }
     const passwordValid = await bcrypt.compare(password, emailExist.rows[0].password);
-    if (!passwordValid) return res.status(400).send({ message: 'invalid password' });
+    if (!passwordValid) return res.status(400).send({ message: 'Invalid password' });
     return next();
   } catch (error) {
     res.status(400).send({
-      message: 'Password is invalid',
+      message: 'Invalid password',
       success: false
     });
   }
@@ -152,7 +152,7 @@ export const checkDriverDetails = async (req, res, next) => {
  *
  * @param {Object} res - response
  *
- * @param {Object} next - middleware
+ * @param {Object} next - callback
  *
  * @return {Object}  - Returns object containing individual ride histroy
  */

@@ -21,7 +21,7 @@ export const addDrivers = async (req, res) => {
     const { id } = data.rows[0];
     const driver = { id, email: data.rows[0].email };
     const token = signToken(driver);
-    return res.status(200).json({
+    return res.status(201).json({
       driver,
       token,
       message: 'Driver created successfully!',
@@ -51,7 +51,7 @@ export const driverLogin = async (req, res) => {
     driversModel.select('id, email, password', `WHERE "email" = '${email}'`);
     if (emailExists.rowCount === 0) {
       return res.status(400).send({
-        message: 'Invalid Email',
+        message: 'Account with email address does not exists',
         success: false
       });
     }
@@ -62,7 +62,7 @@ export const driverLogin = async (req, res) => {
     return res.status(201).json({
       driver,
       token,
-      message: 'Driver login successfully!',
+      message: 'Driver logged in successfully',
       success: true
     });
   } catch (err) {
@@ -77,7 +77,7 @@ export const driverLogin = async (req, res) => {
  *
  * @param {object} res response
  *
- * @returns {object} name edited
+ * @returns {object} response object
  */
 export const editDriver = async (req, res) => {
   const { id } = req.user;
