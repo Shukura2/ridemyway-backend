@@ -25,17 +25,17 @@ export const validateCreateUser = async (req, res, next) => {
   };
 
   const { error } = Joi.validate(req.body, userSchema);
+  if (error) {
+    return res.status(400).json({
+      message: error.details[0].message
+    });
+  }
   const { email, password } = req.body;
   const emailExists = await userModel.select('*', `WHERE "email" = '${email}'`);
   if (emailExists.rowCount) {
-    return res.status(400).send({
-      message: 'Email already exists',
+    return res.status(409).json({
+      message: 'Account with the email address already exists',
       success: false
-    });
-  }
-  if (error) {
-    return res.status(400).send({
-      messsage: error.message
     });
   }
   req.body.password = await bcrypt.hash(password, 10);
@@ -58,8 +58,8 @@ export const checkUserDetails = async (req, res, next) => {
   try {
     const emailExists = await userModel.select('*', `WHERE "email" = '${email}'`);
     if (emailExists.rowCount === 0) {
-      return res.status(400).send({
-        message: 'Invalid Email',
+      return res.status(400).json({
+        message: 'Account with email address does not exists',
         success: false
       });
     }
@@ -67,7 +67,7 @@ export const checkUserDetails = async (req, res, next) => {
     if (!passwordIsValid) return res.status(400).send({ message: 'invalid password' });
     return next();
   } catch (error) {
-    return res.status(400).send({
+    return res.status(400).json({
       message: 'Password is invalid',
       success: false
     });
@@ -93,23 +93,21 @@ export const validateCreateDriver = async (req, res, next) => {
     email: Joi.string().email().max(256).required(),
     password: Joi.string().min(10).required()
   };
-
   const { error } = Joi.validate(req.body, driverSchema);
   if (error) {
-    res.status(400).send({
-      messsage: error.message
+    res.status(400).json({
+      message: error.details[0].message
     });
   }
   const { email, password } = req.body;
-  req.body.password = await bcrypt.hash(password, 10);
   const emailExists = await userModel.select('*', `WHERE "email" = '${email}'`);
-
   if (emailExists.rowCount) {
-    res.status(400).send({
-      message: 'Email already exists',
+    res.status(409).json({
+      message: 'Account with the email address already exists',
       success: false
     });
   }
+  req.body.password = await bcrypt.hash(password, 10);
   return next();
 };
 
@@ -129,17 +127,17 @@ export const checkDriverDetails = async (req, res, next) => {
   try {
     const emailExist = await driversModel.select('*', `WHERE "email" = '${email}'`);
     if (emailExist.rowCount === 0) {
-      res.status(409).send({
-        message: 'Driver with the email address already exists',
+      return res.status(409).send({
+        message: 'Account with the email address already exists',
         success: false
       });
     }
     const passwordValid = await bcrypt.compare(password, emailExist.rows[0].password);
-    if (!passwordValid) return res.status(400).send({ message: 'Invalid password' });
+    if (!passwordValid) return res.status(400).send({ message: 'Password is invalid' });
     return next();
   } catch (error) {
-    res.status(400).send({
-      message: 'Invalid password',
+    res.status(400).json({
+      message: 'Password is invalid',
       success: false
     });
   }
@@ -167,19 +165,19 @@ export const isLoggedIn = (req, res, next) => {
         req.user = userData;
         next();
       } else {
-        res.status(400).send({
+        res.status(400).json({
           success: false,
           message: 'Authentication token is invalid or expired'
         });
       }
     } else {
-      res.status(401).send({
+      res.status(401).json({
         success: false,
         message: 'Authentication token does not exist'
       });
     }
   } catch (error) {
-    return res.status(400).send({
+    return res.status(400).json({
       success: false,
       message: 'Authentication token is invalid or expired',
     });

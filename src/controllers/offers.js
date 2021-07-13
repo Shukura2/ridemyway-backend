@@ -78,11 +78,11 @@ export const updateOffer = async (req, res) => {
 export const allOffers = async (req, res) => {
   const results = await rideOffer.select('*');
   if (results.rowCount === 0) {
-    return res.status(200).send(
+    return res.status(200).json(
       results.rows
     );
   }
-  return res.status(200).send(
+  return res.status(200).json(
     results.rows
   );
 };

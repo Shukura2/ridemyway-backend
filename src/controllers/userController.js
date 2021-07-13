@@ -26,12 +26,12 @@ export const addUsers = async (req, res) => {
     return res.status(201).json({
       user,
       token,
-      message: 'User created successfully!',
+      message: 'User created successfully',
       success: true
     });
   } catch (err) {
     res.status(500).json({
-      messsage: 'Email already exist',
+      message: 'Email already exist',
       success: false
     });
   }
@@ -72,7 +72,7 @@ export const userLogin = async (req, res) => {
     const emailExists = await userModel.select('id, email, password', `WHERE "email" = '${email}'`);
     if (emailExists.rowCount === 0) {
       return res.status(400).send({
-        message: 'Invalid Email',
+        message: 'Account with email address does not exists',
         success: false
       });
     }
@@ -82,7 +82,7 @@ export const userLogin = async (req, res) => {
     return res.status(200).json({
       user,
       token,
-      message: 'User login successfully!',
+      message: 'User logged in successfully',
       success: true
     });
   } catch (err) {

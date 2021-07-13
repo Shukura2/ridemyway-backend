@@ -24,12 +24,12 @@ export const addDrivers = async (req, res) => {
     return res.status(201).json({
       driver,
       token,
-      message: 'Driver created successfully!',
+      message: 'Driver created successfully',
       success: true
     });
   } catch (err) {
     res.status(500).json({
-      messsage: 'Email already exist',
+      message: 'Email already exist',
       success: false
     });
   }
@@ -50,7 +50,7 @@ export const driverLogin = async (req, res) => {
     const emailExists = await
     driversModel.select('id, email, password', `WHERE "email" = '${email}'`);
     if (emailExists.rowCount === 0) {
-      return res.status(400).send({
+      return res.status(400).json({
         message: 'Account with email address does not exists',
         success: false
       });
