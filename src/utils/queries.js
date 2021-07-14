@@ -19,6 +19,7 @@ export const createRideHistoryTable = `
     id SERIAL PRIMARY KEY,
     "driverId" int NOT NULL,
     "userId" int NOT NULL,
+    "offerId" int NOT NULL,
     amount int NOT NULL,
     "dateOfTrip" timestamp DEFAULT NOW() NOT NULL,
     destination varchar NOT NULL,

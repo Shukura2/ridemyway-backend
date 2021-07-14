@@ -1,10 +1,10 @@
 import express from 'express';
-import { addUsersHistory, allHistory } from '../controllers/RideHistory';
+import { allHistory, joinRide } from '../controllers/RideHistory';
 import { isLoggedIn } from '../middleware/AuthMiddleware';
 
 const rideHistoryRouter = express.Router();
 
-rideHistoryRouter.post('/offer/request', isLoggedIn, addUsersHistory);
+rideHistoryRouter.post('/join/ride/:id', isLoggedIn, joinRide);
 rideHistoryRouter.get('/all-history', allHistory);
 
 export default rideHistoryRouter;

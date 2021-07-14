@@ -1,6 +1,7 @@
 import Model from '../models/model.js';
 
 const rideHistoryModel = new Model('ride_history');
+const rideOffer = new Model('offers');
 
 /**
  * Insert user history into database
@@ -11,18 +12,32 @@ const rideHistoryModel = new Model('ride_history');
  *
  * @returns {object} user history
  */
-export const addUsersHistory = async (req, res) => {
-  const {
-    driverId, amount, destination
-  } = req.body;
+export const joinRide = async (req, res) => {
+  const offerId = req.params.id;
   const { id } = req.user;
-  const columns = '"driverId", "userId", amount, destination, status';
-  const values = `'${driverId}', '${id}', '${amount}', '${destination}', 'Pending' `;
   try {
-    const data = await rideHistoryModel.insertWithReturn(columns, values);
-    res.status(201).json({ data: data.rows[0] });
-  } catch (err) {
-    res.status(500).json({ message: err.stack });
+    const offer = await rideOffer.select('id, "driverId", amount, destination', `
+    WHERE id = '${offerId}'`);
+    if (offer.rowCount) {
+      const {
+        id: idOffer, driverId, amount, destination
+      } = offer.rows[0];
+      const columns = '"driverId", "userId", "offerId", amount, destination, status';
+      const values = `'${driverId}', '${id}', '${idOffer}', '${amount}',
+      ' ${destination}', 'Pending'`;
+      await rideHistoryModel.insertWithReturn(columns, values);
+      return res.status(200).json({
+        message: 'Ride offer joined'
+      });
+    }
+    return res.status(400).json({
+      message: 'Ride offer is invalid'
+    });
+}
+  catch (error) {
+    return res.json({
+      message: 'user can\'t join ride offer'
+    });
   }
 };
 
