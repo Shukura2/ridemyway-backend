@@ -95,7 +95,7 @@ export const validateCreateDriver = async (req, res, next) => {
   };
   const { error } = Joi.validate(req.body, driverSchema);
   if (error) {
-    res.status(400).json({
+    return res.status(400).json({
       message: error.details[0].message
     });
   }

@@ -30,7 +30,7 @@ export const addUsers = async (req, res) => {
       success: true
     });
   } catch (err) {
-    res.status(500).json({
+    res.status(409).json({
       message: 'Email already exist',
       success: false
     });

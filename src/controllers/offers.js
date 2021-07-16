@@ -76,13 +76,18 @@ export const updateOffer = async (req, res) => {
  * @returns {object} all offers
  */
 export const allOffers = async (req, res) => {
-  const results = await rideOffer.select('*');
-  if (results.rowCount === 0) {
+  try {
+    const results = await rideOffer.select('*');
+    if (results.rowCount === 0) {
+      return res.status(400).json({
+        message: 'No offers',
+        success: false
+      });
+    }
     return res.status(200).json(
       results.rows
     );
+  } catch (error) {
+    res.status(500).json({ message: error.message });
   }
-  return res.status(200).json(
-    results.rows
-  );
 };

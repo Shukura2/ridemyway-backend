@@ -30,13 +30,13 @@ export const joinRide = async (req, res) => {
         message: 'Ride offer joined'
       });
     }
-    return res.status(400).json({
-      message: 'Ride offer is invalid'
+    return res.status(404).json({
+      message: 'There is no offer with this id'
     });
-}
+  }
   catch (error) {
-    return res.json({
-      message: 'user can\'t join ride offer'
+    return res.status(400).json({
+      message: 'Authentication token is invalid or expired'
     });
   }
 };
@@ -51,13 +51,18 @@ export const joinRide = async (req, res) => {
  * @returns {object} all offers
  */
 export const allHistory = async (req, res) => {
-  const results = await rideHistoryModel.select('*');
-  if (results.rowCount === 0) {
-    return res.status(200).send(
+  try {
+    const results = await rideHistoryModel.select('*');
+    if (results.rowCount === 0) {
+      return res.status(400).json({
+        message: 'No history',
+        success: false
+      });
+    }
+    return res.status(200).json(
       results.rows
     );
+  } catch (error) {
+    res.status(500).json({ message: error.message });
   }
-  return res.status(200).send(
-    results.rows
-  );
 };

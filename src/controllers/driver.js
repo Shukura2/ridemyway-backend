@@ -28,7 +28,7 @@ export const addDrivers = async (req, res) => {
       success: true
     });
   } catch (err) {
-    res.status(500).json({
+    res.status(409).json({
       message: 'Email already exist',
       success: false
     });
@@ -59,7 +59,7 @@ export const driverLogin = async (req, res) => {
     const { id } = emailExists.rows[0];
     const driver = { id, email };
     const token = signToken(driver);
-    return res.status(201).json({
+    return res.status(200).json({
       driver,
       token,
       message: 'Driver logged in successfully',
