@@ -24,19 +24,22 @@ export const joinRide = async (req, res) => {
       } = offer.rows[0];
       const columns = '"driverId", "userId", "offerId", amount, destination, status';
       const values = `'${driverId}', '${id}', '${idOffer}', '${amount}',
-      ' ${destination}', 'Pending'`;
+      '${destination}', 'Pending'`;
       await rideHistoryModel.insertWithReturn(columns, values);
       return res.status(200).json({
-        message: 'Ride offer joined'
+        message: 'Ride offer joined',
+        success: true
       });
     }
     return res.status(404).json({
-      message: 'There is no offer with this id'
+      message: 'There is no offer with this id',
+      success: false
     });
   }
   catch (error) {
     return res.status(400).json({
-      message: 'Authentication token is invalid or expired'
+      message: 'Authentication token is invalid or expired',
+      success: false
     });
   }
 };

@@ -64,7 +64,12 @@ export const checkUserDetails = async (req, res, next) => {
       });
     }
     const passwordIsValid = await bcrypt.compare(password, emailExists.rows[0].password);
-    if (!passwordIsValid) return res.status(400).send({ message: 'invalid password' });
+    if (!passwordIsValid) {
+      return res.status(400).send({
+        message: 'Email or password is invalid',
+        success: false
+      });
+    }
     return next();
   } catch (error) {
     return res.status(400).json({
@@ -133,7 +138,12 @@ export const checkDriverDetails = async (req, res, next) => {
       });
     }
     const passwordValid = await bcrypt.compare(password, emailExist.rows[0].password);
-    if (!passwordValid) return res.status(400).send({ message: 'Password is invalid' });
+    if (!passwordValid) {
+      return res.status(400).send({
+        message: 'Email or password is invalid',
+        success: false
+      });
+    }
     return next();
   } catch (error) {
     res.status(400).json({
